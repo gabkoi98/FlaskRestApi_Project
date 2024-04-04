@@ -66,3 +66,23 @@ class CreateCart(MethodView):
 #             db.session.rollback()
 #         return jsonify({"Message": "product has been created successfully "}) , 201 
 
+
+
+
+
+   
+    @blp.response(200, CategorySchema)
+    def delete(self):
+        Categories  = CategoryModel.query.all()
+        
+        for category in Categories:
+            db.session.delete(category)
+            
+        try:
+            db.session.commit()
+        except SQLAlchemyError:
+            db.session.rollback()
+            abort(500, message="An error occurred while deleting the products")
+        return jsonify({"Message": "Products are deleted successfully"}), 204
+
+            
